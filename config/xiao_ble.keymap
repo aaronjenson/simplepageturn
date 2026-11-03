@@ -16,4 +16,4 @@
 
 &mt {
     tapping-term-ms = <500>;
-}
+};
