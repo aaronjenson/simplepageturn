@@ -8,7 +8,7 @@
 
         default_layer {
             bindings = <
-                &kp PG_DN    // Button 1 (D0): Next Page
+                &mt PG_UP PG_DN    // Button 1 (D0): Next Page on tap, Prev Page on hold
             >;
         };
     };
