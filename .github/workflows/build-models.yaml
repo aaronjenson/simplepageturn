@@ -1,0 +1,27 @@
+name: Render OpenSCAD CLI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openscad
+
+      - name: Render pieces
+        run: |
+          openscad -o base.stl -D 'part_to_render="base"' enclosure.scad
+          openscad -o top.stl -D 'part_to_render="top"' enclosure.scad
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enclosure STLs
+          path: *.stl
