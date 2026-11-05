@@ -1,4 +1,4 @@
-name: Render OpenSCAD CLI
+name: Generate Enclosure STLs
 on:
   push:
     branches:
@@ -23,5 +23,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: enclosure STLs
+          name: enclosure
           path: "*.stl"
