@@ -21,5 +21,6 @@
 include:
   - board: seeeduino_xiao_ble
     shield: simplepageturn
-  - board: seeeduino_xiao_ble
-    shield: settings_reset
+# Uncomment below to generate a settings reset firmware image
+#  - board: seeeduino_xiao_ble
+#    shield: settings_reset
