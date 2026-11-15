@@ -1,80 +1,19 @@
-#include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
-
-&sl {
-    release-after-ms = <4000>; // Auto-exits Layer 1 if no taps occur within 4 seconds
-};
+ #include <behaviors.dtsi>
+ #include <dt-bindings/zmk/keys.h>
+ #include <dt-bindings/zmk/bt.h>
 
 / {
-    macros {
-        // Clears Bluetooth AND exits the reset layer immediately
-        bt_clr_and_exit: bt_clr_and_exit {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&bt BT_CLR>, <&to 0>;
-        };
-
-        // Wrappers with 0 binding cells so they can be nested cleanly
-        act_sl1: act_sl1 {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&sl 1>;
-        };
-
-        act_pgup: act_pgup {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp PG_UP>;
-        };
-    };
-
-    behaviors {
-        // TIER 2 & 3: 4500ms + 500ms from Tier 1 = 5000ms (5s) total hold threshold
-        ht_tier2_tier3: hold_tap_tier2_tier3 {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <4500>;
-            bindings = <&act_sl1>, <&act_pgup>;
-        };
-
-        // TIER 1: <500ms sends PG_DN; >=500ms passes control to Tier 2/3
-        ht_tier1: hold_tap_tier1 {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <500>;
-            bindings = <&ht_tier2_tier3>, <&kp>;
-        };
-
-        // CONFIRMATION: Tap 5 times rapidly while on Layer 1
-        td_confirm_reset: tap_dance_confirm_reset {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <400>;
-            bindings = <&to 0>,            // 1 tap: Cancel & return to normal layer
-                       <&none>,            // 2 taps: Keep counting
-                       <&none>,            // 3 taps: Keep counting
-                       <&none>,            // 4 taps: Keep counting
-                       <&bt_clr_and_exit>; // 5 taps: Wipe BT and return to normal
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
             bindings = <
-                // First parameter '0' is a dummy placeholder; second parameter is PG_DN
-                &ht_tier1 0 PG_DN
-            >;
-        };
-
-        reset_layer {
-            bindings = <
-                &td_confirm_reset
+                &mt PG_UP PG_DN    // Button 1 (D0): Next Page on tap, Prev Page on hold
             >;
         };
     };
+};
+
+&mt {
+    tapping-term-ms = <500>;
 };
